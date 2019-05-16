@@ -23,3 +23,6 @@ func main()  {
 	fmt.Println(wordninja.Cut(mul))
 }
 ```
+## reference
+> - https://stackoverflow.com/questions/8870261/how-to-split-text-without-spaces-into-list-of-words/11642687#11642687
+> - https://github.com/keredson/wordninja
