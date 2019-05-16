@@ -24,5 +24,5 @@ func main()  {
 }
 ```
 ## reference
-> - https://stackoverflow.com/questions/8870261/how-to-split-text-without-spaces-into-list-of-words/11642687#11642687
-> - https://github.com/keredson/wordninja
+> 1. https://stackoverflow.com/questions/8870261
+> 2. https://github.com/keredson/wordninja
