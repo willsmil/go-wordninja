@@ -15,13 +15,15 @@ import (
 	"fmt"
 	"os"
 	"io"
+	"runtime"
+	"path"
 )
 
 var maxLenWord int
 var wordCost map[string]float64
 
 func init() {
-	words := loadWords("./dict/wordninja_words.txt")
+	words := loadWords(path.Dir(getCurrentFilePath())+"/dict/wordninja_words.txt")
 	generateCutWordMap(words)
 	fmt.Println("init English cut words successfully!")
 }
@@ -168,7 +170,7 @@ func readFileByLine(file string) (lines []string, err error) {
 
 	f, err := os.Open(file)
 	if err != nil {
-		return lines, errors.New("open file failed")
+		return lines, err
 	}
 	defer f.Close()
 
@@ -185,4 +187,10 @@ func readFileByLine(file string) (lines []string, err error) {
 		lines = append(lines, line)
 	}
 	return lines, nil
+}
+
+// getCurrentFilePath get current file path
+func getCurrentFilePath() string {
+	_, filePath, _, _ := runtime.Caller(1)
+	return filePath
 }
