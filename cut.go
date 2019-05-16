@@ -1,8 +1,3 @@
-/*
- *Author:wangshuyao
- *Date:17:03 2019/5/15
- */
-
 package wordninja
 
 import (
@@ -152,11 +147,12 @@ func CutEnglish(eng string) []string {
 }
 
 // reverse return reversed list of `dst`
-func reverse(dst []string) (res []string) {
-	for i := len(dst); i > 0; i-- {
-		res = append(res, dst[i-1])
+func reverse(dst []string) ([]string) {
+	length := len(dst)
+	for i:=0; i<length/2; i++ {
+		dst[i], dst[length-i-1] = dst[length-i-1], dst[i]
 	}
-	return
+	return dst
 }
 
 // getEnglishText return all the English characters of string `s`.

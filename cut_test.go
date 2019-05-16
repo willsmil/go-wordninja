@@ -1,8 +1,3 @@
-/*
- *Author:wangshuyao
- *Date:10:24 2019/5/16
- */
-
 package wordninja
 
 import (
