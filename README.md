@@ -1,4 +1,8 @@
 # go-wordninja
+## Getting Start
+```bash
+go get github.com/willsmil/go-wordninja
+```
 
 ## Usage
 ```go
