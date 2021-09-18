@@ -1,31 +1,30 @@
 package wordninja
 
 import (
-	"math"
 	"bufio"
+	"embed"
+	"errors"
+	"io"
+	"math"
 	"regexp"
 	"strings"
-	"errors"
 	"unicode"
-	"fmt"
-	"os"
-	"io"
-	"runtime"
-	"path"
 )
 
 var maxLenWord int
 var wordCost map[string]float64
 
+//go:embed dict
+var wordFile embed.FS
+
 func init() {
-	words := loadWords(path.Dir(getCurrentFilePath())+"/dict/wordninja_words.txt")
+	words := loadWords()
 	generateCutWordMap(words)
-	fmt.Println("init English cut words successfully!")
 }
 
 // load the english cut words from file, return list of word.
-func loadWords(file string) ([]string) {
-	words, err := readFileByLine(file)
+func loadWords() []string {
+	words, err := readFileByLine()
 	if err != nil {
 		panic("load english cut word failed," + err.Error())
 	}
@@ -58,7 +57,7 @@ type text struct {
 
 // bestMatch will return the minimal cost and its appropriate character's index.
 func (s *text) bestMatch(costs []float64, i int) (match, error) {
-	candidates := costs[max(0, i-maxLenWord): i]
+	candidates := costs[max(0, i-maxLenWord):i]
 	k := 0
 	var matchs []match
 	for j := len(candidates) - 1; j >= 0; j-- {
@@ -138,7 +137,7 @@ func CutEnglish(eng string) []string {
 			}
 		}
 		if newToken {
-			word := eng[i-m.idx:i]
+			word := eng[i-m.idx : i]
 			out = append(out, word)
 		}
 		i -= m.idx
@@ -147,9 +146,9 @@ func CutEnglish(eng string) []string {
 }
 
 // reverse return reversed list of `dst`
-func reverse(dst []string) ([]string) {
+func reverse(dst []string) []string {
 	length := len(dst)
-	for i:=0; i<length/2; i++ {
+	for i := 0; i < length/2; i++ {
 		dst[i], dst[length-i-1] = dst[length-i-1], dst[i]
 	}
 	return dst
@@ -162,9 +161,8 @@ func getEnglishText(s string) string {
 }
 
 //ReadFileByLine return a list by reading file line by line.
-func readFileByLine(file string) (lines []string, err error) {
-
-	f, err := os.Open(file)
+func readFileByLine() (lines []string, err error) {
+	f, err := wordFile.Open("dict/wordninja_words.txt")
 	if err != nil {
 		return lines, err
 	}
@@ -183,10 +181,4 @@ func readFileByLine(file string) (lines []string, err error) {
 		lines = append(lines, line)
 	}
 	return lines, nil
-}
-
-// getCurrentFilePath get current file path
-func getCurrentFilePath() string {
-	_, filePath, _, _ := runtime.Caller(1)
-	return filePath
 }
